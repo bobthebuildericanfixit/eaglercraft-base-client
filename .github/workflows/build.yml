@@ -1,9 +1,9 @@
-name: Build Eaglercraft Client
+name: Build Eaglercraft Performance Client
 
 on:
   push:
-    branches: [ "main", "master" ] # Runs every time you save code
-  workflow_dispatch: # Allows you to run it manually
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,13 +18,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
 
-      - name: Build with Maven
-        run: mvn clean package
+      - name: Make Gradle Executable
+        run: chmod +x gradlew
 
-      - name: Upload Compiled Client
+      - name: Build JavaScript Client
+        # This command is the standard for EaglercraftX workspace
+        run: ./gradlew makeMainOfflineDownload 
+
+      - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
-          name: Eaglercraft-Offline-Client
-          path: target/*.html # This grabs the generated HTML file
+          name: Eaglercraft-Client
+          # Eaglercraft Gradle usually puts the file in the 'javascript' folder
+          path: javascript/*.html
