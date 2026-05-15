@@ -23,12 +23,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build JavaScript Client
-        # This command is the standard for EaglercraftX workspace
-        run: ./gradlew makeMainOfflineDownload 
+        # Added the sub-project prefix ":target_teavm_javascript:"
+        run: ./gradlew :target_teavm_javascript:makeMainOfflineDownload
 
       - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
-          name: Eaglercraft-Client
-          # Eaglercraft Gradle usually puts the file in the 'javascript' folder
+          name: Eaglercraft-Offline-Client
+          # The file usually ends up in the /javascript/ folder
           path: javascript/*.html
